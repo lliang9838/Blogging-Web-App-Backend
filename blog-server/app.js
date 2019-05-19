@@ -9,28 +9,23 @@ var usersRouter = require('./routes/users');
 var blogRouter = require('./routes/blog');
 var mongoUtil = require( './mongoUtil' ); //current directory
 
-var db = mongoUtil.getDb();
+
 
 var app = express();
 
-const findDocuments = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('Posts');
-  // Find some documents
-  collection.find({}).toArray(function(err, docs) {
-    assert.equal(err, null);
-    console.log("Found the following records");
-    console.log(docs)
-    callback(docs);
+mongoUtil.connect(() => { //attached this callback so that the app only starts listening AFTER db instance is established
+  //previously, we tried to listen and connect to db simultaneuously, but many times we didnt finish connecting db
+  //and we would get to the routes with no db instance and program would crash
+  app.listen(3000 || 5555, function (){
+      console.log(`Listening`);
   });
-}
+});
 
-mongoUtil.connectToServer( function( err, client ) { //calling it once
-  if (err) console.log(err);
-  // findDocuments(db, function() {
-  //   client.close();
-  // });
-} );
+
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/blog', blogRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,9 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/blog', blogRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
