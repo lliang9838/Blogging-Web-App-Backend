@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var commonmark = require('commonmark')
+var reader = new commonmark.Parser();
+var writer = new commonmark.HtmlRenderer();
 
 const assert = require('assert');
 
@@ -26,8 +29,16 @@ router.get('/:username/:postid', function(req, res, next) {
       assert.equal(null, err);
       assert.equal(1, docs.length);
       console.log(docs)
-      var my_title = docs[0].title
-      var my_body = docs[0].body
+      var title = docs[0].title
+      var body = docs[0].body
+
+      
+      var parsed_t = reader.parse(title); // parsed is a 'Node' tree
+      // transform parsed if you like...
+      var my_title = writer.render(parsed_t); // result is a String
+
+      var parsed_b = reader.parse(body);
+      var my_body = writer.render(parsed_b);
 
       res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
     });
