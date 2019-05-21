@@ -9,7 +9,39 @@ const assert = require('assert');
 var mongoUtil = require( '../mongoUtil' );
 
 
-router.get('/:username', function(req, res, next) {
+router.get('/:username', function(req, res, next) 
+{
+  let username = req.params.username 
+  let idx = 0; //0 means postid 1
+  //let's try to show the first 5 posts, next button handled later
+  const col = mongoUtil.db().collection('Posts')
+
+  let cursor = col.find({"username":username});
+
+  cursor.toArray(function(err, docs) {
+      assert.equal(null, err);
+      
+      console.log(docs)
+      
+
+      //should the parsing be done here?
+
+      let arr = [];
+      for(let i = idx; i < Math.min(5,docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
+      {
+
+        var obj = {title:writer.render(reader.parse(docs[i].title)), body:writer.render(reader.parse(docs[i].body))}
+        
+        
+        arr.push(obj)
+      }
+      
+      console.log(arr)
+
+      //res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
+    });
+
+
   res.send('username');
 });
 
