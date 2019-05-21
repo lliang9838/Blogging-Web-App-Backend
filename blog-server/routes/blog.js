@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const assert = require('assert');
+
 var mongoUtil = require( '../mongoUtil' );
 
 
@@ -14,19 +16,24 @@ router.get('/:username/:postid', function(req, res, next) {
     let username = req.params.username; //get the username
     let postid = req.params.postid; //get the postid
 
+   // console.log(typeof username)
+   // console.log(typeof postid)
     
-    //console.log(db)
     const col = mongoUtil.db().collection('Posts')
-    console.log(mongoUtil.db())
-    console.log('ok')
-    // col.find({$and: [{"postid":postid}, {"username":username}] }).toArray(function(err, docs) {
-    //   assert.equal(null, err);
-    //  //assert.equal(2, docs.length);
-    //   console.log(docs)
-    //   client.close();
-    // });
+    // console.log(mongoUtil.db())
+
+    col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+      assert.equal(null, err);
+      assert.equal(1, docs.length);
+      console.log(docs)
+      var my_title = docs[0].title
+      var my_body = docs[0].body
+
+      res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
+    });
     
-    res.send('hi');
+    
+    //res.send('hi');
 
   });
   
