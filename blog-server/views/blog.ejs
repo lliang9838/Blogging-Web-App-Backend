@@ -8,23 +8,18 @@
             <th>Title</th> 
             <th>Body</th> 
         </tr>
-        <% let button = false %>
-        <%if(my_arr.length > 5) %>
-        <%{ %>
-        <%  button = true %>
-        <% } %>
-        <% for(var i = idx; i < my_arr.length; i++){ %>
+       
+        <% for(var i = 0; i < Math.min(5, my_arr.length); i++){ %>
         <tr >  
-            <% if(idx-i ===5){
-                break; }%>
             <td> <%- my_arr[i].title %> </td> 
             <td> <%- my_arr[i].body %> </td>
         </tr>
          <% }%>
     </table>
-    <% if(button === true) %>
-    <% { %>
-    <a id="next" href="http:/blog/<%-username%>?start=<%-i+1 %>">next</a> 
+    <!-- refer to s/o link on how to embed conditionals in ejs -->
+    <% console.log(button)%>  <!-- there's a difference between if {} and if [newline]{} -->
+    <% if(button){ %>
+        <a id="next" href="http:/blog/<%=username%>?start=<%=i+1%>">next</a> 
     <% } %>
 </body>
 </html>

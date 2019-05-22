@@ -36,18 +36,24 @@ router.get('/:username', function(req, res, next)
       //should the parsing be done here?
 
       let arr = [];
-      //we want to do doing either docs length or 5
-      for(let i = idx; i < docs.length; i++) //this is the converting part as well, only pushes the first 5 for now
+      let button = false;
+
+      if(docs.length > 5)
+      {
+        button = true;
+      }
+
+      console.log("My index is " + idx)
+      for(let i = idx; i < Math.min(5+idx, docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
       {
 
         var obj = {title:writer.render(reader.parse(docs[i].title)), body:writer.render(reader.parse(docs[i].body))}
         
-        
         arr.push(obj)
       }
       
-      //console.log(arr)
-      res.render('blog', {my_arr:arr, username:username, idx:idx}); 
+      console.log(arr)
+      res.render('blog', {my_arr:arr, username:username, idx:idx, button:button}); 
       //res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
     });
 });
