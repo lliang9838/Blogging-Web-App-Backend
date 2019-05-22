@@ -38,12 +38,13 @@ router.get('/:username', function(req, res, next)
       let arr = [];
       let button = false;
 
-      if(docs.length > 5)
+      
+      if(docs.length-(idx+1) >= 5)
       {
         button = true;
       }
 
-      console.log("My index is " + idx)
+      //("My index is " + idx)
       for(let i = idx; i < Math.min(5+idx, docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
       {
 
@@ -52,8 +53,8 @@ router.get('/:username', function(req, res, next)
         arr.push(obj)
       }
       
-      console.log(arr)
-      res.render('blog', {my_arr:arr, username:username, idx:idx, button:button}); 
+      //console.log(arr)
+      res.render('blog', {my_arr:arr, username:username, button:button, idx:idx, docs:docs }); 
       //res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
     });
 });

@@ -9,16 +9,17 @@
             <th>Body</th> 
         </tr>
        
-        <% for(var i = 0; i < Math.min(5, my_arr.length); i++){ %>
+        <% for(var i = idx; i < Math.min(5+idx, docs.length); i++){ %>
         <tr >  
-            <td> <%- my_arr[i].title %> </td> 
-            <td> <%- my_arr[i].body %> </td>
+            <td> <%- my_arr[i-idx].title %> </td> 
+            <td> <%- my_arr[i-idx].body %> </td>
         </tr>
          <% }%>
     </table>
     <!-- refer to s/o link on how to embed conditionals in ejs -->
-    <% console.log(button)%>  <!-- there's a difference between if {} and if [newline]{} -->
-    <% if(button){ %>
+    
+    <!-- there's a difference between if {} and if [newline]{} -->
+    <% if(button){ %> <!-- href in this case is an absolute url haha-->
         <a id="next" href="http:/blog/<%=username%>?start=<%=i+1%>">next</a> 
     <% } %>
 </body>
