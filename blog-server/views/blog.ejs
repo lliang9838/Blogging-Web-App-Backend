@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+   <title>Blog Web Page</title> 
+</head>
+<body>
+    <table> 
+        <tr>
+            <th>Title</th> 
+            <th>Body</th> 
+        </tr>
+        <% for(let i = 0; i < Math.min(my_arr.length,5); i++){ %>
+        <tr >  
+            <td> <%- my_arr[i].title %> </td> 
+            <td> <%- my_arr[i].body %> </td>
+        </tr>
+         <% }%>
+    </table>
+</body>
+</html>
+

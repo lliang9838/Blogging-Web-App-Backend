@@ -12,7 +12,16 @@ var mongoUtil = require( '../mongoUtil' );
 router.get('/:username', function(req, res, next) 
 {
   let username = req.params.username 
-  let idx = 0; //0 means postid 1
+  let start = req.query.start
+
+  //console.log(start)
+  let idx = 0
+  if(typeof start !== 'undefined') //this is the correct way to check if something is undefined
+  {
+    
+    idx = start-1; //if start index is not undefined, this we assign idx to start
+  }
+  
   //let's try to show the first 5 posts, next button handled later
   const col = mongoUtil.db().collection('Posts')
 
@@ -21,13 +30,14 @@ router.get('/:username', function(req, res, next)
   cursor.toArray(function(err, docs) {
       assert.equal(null, err);
       
-      console.log(docs)
+      //console.log(docs)
       
 
       //should the parsing be done here?
 
       let arr = [];
-      for(let i = idx; i < Math.min(5,docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
+      //we want to do doing either docs length or 5
+      for(let i = idx; i < Math.min(idx+5,docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
       {
 
         var obj = {title:writer.render(reader.parse(docs[i].title)), body:writer.render(reader.parse(docs[i].body))}
@@ -36,13 +46,10 @@ router.get('/:username', function(req, res, next)
         arr.push(obj)
       }
       
-      console.log(arr)
-
+      //console.log(arr)
+      res.render('blog', {my_arr:arr}); 
       //res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
     });
-
-
-  res.send('username');
 });
 
 //Question: how to share a single database connection and reuse the created connection for all MongoDB commands.
