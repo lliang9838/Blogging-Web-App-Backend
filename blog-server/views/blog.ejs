@@ -8,13 +8,24 @@
             <th>Title</th> 
             <th>Body</th> 
         </tr>
-        <% for(let i = 0; i < Math.min(my_arr.length,5); i++){ %>
+        <% let button = false %>
+        <%if(my_arr.length > 5) %>
+        <%{ %>
+        <%  button = true %>
+        <% } %>
+        <% for(var i = idx; i < my_arr.length; i++){ %>
         <tr >  
+            <% if(idx-i ===5){
+                break; }%>
             <td> <%- my_arr[i].title %> </td> 
             <td> <%- my_arr[i].body %> </td>
         </tr>
          <% }%>
     </table>
+    <% if(button === true) %>
+    <% { %>
+    <a id="next" href="http:/blog/<%-username%>?start=<%-i+1 %>">next</a> 
+    <% } %>
 </body>
 </html>
 

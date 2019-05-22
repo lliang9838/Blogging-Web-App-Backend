@@ -37,7 +37,7 @@ router.get('/:username', function(req, res, next)
 
       let arr = [];
       //we want to do doing either docs length or 5
-      for(let i = idx; i < Math.min(idx+5,docs.length); i++) //this is the converting part as well, only pushes the first 5 for now
+      for(let i = idx; i < docs.length; i++) //this is the converting part as well, only pushes the first 5 for now
       {
 
         var obj = {title:writer.render(reader.parse(docs[i].title)), body:writer.render(reader.parse(docs[i].body))}
@@ -47,7 +47,7 @@ router.get('/:username', function(req, res, next)
       }
       
       //console.log(arr)
-      res.render('blog', {my_arr:arr}); 
+      res.render('blog', {my_arr:arr, username:username, idx:idx}); 
       //res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
     });
 });
