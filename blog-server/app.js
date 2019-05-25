@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var blogRouter = require('./routes/blog');
+var loginRouter = require('./routes/login');
+
 var mongoUtil = require( './mongoUtil' ); //current directory
 
 
@@ -26,6 +28,7 @@ mongoUtil.connect(() => { //attached this callback so that the app only starts l
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/blog', blogRouter);
+app.use('/login', loginRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
