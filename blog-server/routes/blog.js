@@ -73,20 +73,26 @@ router.get('/:username/:postid', function(req, res, next) {
 
     col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
       assert.equal(null, err);
-      assert.equal(1, docs.length);
-      console.log(docs)
-      var title = docs[0].title
-      var body = docs[0].body
 
-      
-      var parsed_t = reader.parse(title); // parsed is a 'Node' tree
-      // transform parsed if you like...
-      var my_title = writer.render(parsed_t); // result is a String
+      if(1 !== docs.length)
+      {
+        res.sendStatus(404);
+      }
+      else{
+        console.log(docs)
+        var title = docs[0].title
+        var body = docs[0].body
 
-      var parsed_b = reader.parse(body);
-      var my_body = writer.render(parsed_b);
+        
+        var parsed_t = reader.parse(title); // parsed is a 'Node' tree
+        // transform parsed if you like...
+        var my_title = writer.render(parsed_t); // result is a String
 
-      res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
+        var parsed_b = reader.parse(body);
+        var my_body = writer.render(parsed_b);
+
+        res.render('blog_id', {title:my_title,body:my_body}) //sending to view template blog_id with template data
+      }
     });
     
     
