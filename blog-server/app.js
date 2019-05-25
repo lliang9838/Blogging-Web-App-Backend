@@ -9,11 +9,13 @@ var usersRouter = require('./routes/users');
 var blogRouter = require('./routes/blog');
 var loginRouter = require('./routes/login');
 
+
 var mongoUtil = require( './mongoUtil' ); //current directory
 
 
-
 var app = express();
+
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 mongoUtil.connect(() => { //attached this callback so that the app only starts listening AFTER db instance is established
   //previously, we tried to listen and connect to db simultaneuously, but many times we didnt finish connecting db

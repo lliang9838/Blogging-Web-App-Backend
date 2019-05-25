@@ -3,11 +3,14 @@
    <title>Blog Web Page</title> 
 </head>
 <body>
-    <form action="/login" method="post">
+    <form  method="post">
         Username:<br>
         <input type="text" name="username"><br>
         Password:<br>
         <input type="password" name="password">
+        <% if(redirect){ %> <!-- href in this case is an absolute url haha-->
+        <input type="hidden" name="redirect" value="<%=redirect%>">
+        <% } %>
         <input type="submit" value="Login">
     </form>
 </body>

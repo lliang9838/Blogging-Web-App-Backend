@@ -5,20 +5,17 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     let redirect = req.query.redirect //optional parameter
 
-    
-    if(redirect !== 'undefined') //if it's passed in, add it to template data
-    {    
-        res.render('login', {redirect:redirect})
-    }
-    else
-    {
-        res.render('login')
-    }
 
+    
+    res.render('login', {redirect:redirect})
+    
 });
 
 // POST method route
 router.post('/', function (req, res, next) {
+    console.log(req.body.username)
+    console.log(req.body.password)
+    console.log(req.body.redirect)
     res.send('we are in POST')
 });
 
