@@ -32,7 +32,9 @@ router.post('/', function (req, res, next) {
 
       if(1 !== docs.length) //cannot have more than one username
       {
-        res.status(404).send('Sorry, we cannot find that!');
+        //console.log('false')
+        //TODO: tip #2: to send html in response body. the string needs to be in line
+        res.status(401).send("<head><title>Blog Web Page</title></head><body><form  method=\"post\">Username:<br><input type=\"text\" name=\"username\"><br\>Password:<br><input type=\"password\" name=\"password\"><input type=\"submit\" value=\"Login\"></form></body>")
       }
       else{
         console.log(docs)
@@ -62,7 +64,7 @@ router.post('/', function (req, res, next) {
                       }
                       else
                       {
-                        res.status(200).send('<p>The authentication was successful.</p>');
+                        res.status(200).send('<p>The authentication is successful</p>')
                       }
           
                     });
@@ -70,7 +72,7 @@ router.post('/', function (req, res, next) {
             else
             {
                 console.log('false')
-                res.status(401).send('<p>some html</p>');
+                res.status(401).sendFile('login.html');
             }
             
         });
