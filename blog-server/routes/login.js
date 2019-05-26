@@ -66,13 +66,11 @@ router.post('/', function (req, res, next) {
                       {
                         res.status(200).send('<p>The authentication is successful</p>')
                       }
-          
                     });
             }
             else
             {
-                console.log('false')
-                res.status(401).sendFile('login.html');
+                res.status(401).send("<head><title>Blog Web Page</title></head><body><form  method=\"post\">Username:<br><input type=\"text\" name=\"username\"><br\>Password:<br><input type=\"password\" name=\"password\"><input type=\"submit\" value=\"Login\"></form></body>")
             }
             
         });
