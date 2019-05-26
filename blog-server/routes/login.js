@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
-const saltRounds = 10;
+var jwt = require('jsonwebtoken');
 
 const assert = require('assert');
 var mongoUtil = require( '../mongoUtil' );
@@ -40,7 +40,22 @@ router.post('/', function (req, res, next) {
             if(result) //meaning true,
             {
                 console.log('true')
-                res.status(200).send('<p>some html</p>');
+               
+                jwt.sign({
+                  exp : Math.floor(Date.now() / 1000) + (120 * 60),
+                  usr : username
+                } , 
+                 "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", 
+                 { header: {
+                  "alg": "HS256",
+                  "typ": "JWT"
+                  } },
+                  function(err, token) { //TODO: tip #1: if the desired result isn't obtained, check the err message to troubleshoot
+                      console.log(err)
+                      console.log('token is ' + token);
+                    });
+
+                  res.status(200).send('<p>some html</p>');
             }
             else
             {
