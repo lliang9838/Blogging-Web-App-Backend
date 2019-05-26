@@ -32,7 +32,7 @@ router.post('/', function (req, res, next) {
 
       if(1 !== docs.length) //cannot have more than one username
       {
-        res.sendStatus(404);
+        res.status(404).send('Sorry, we cannot find that!');
       }
       else{
         console.log(docs)
@@ -40,10 +40,12 @@ router.post('/', function (req, res, next) {
             if(result) //meaning true,
             {
                 console.log('true')
+                res.status(200).send('<p>some html</p>');
             }
             else
             {
                 console.log('false')
+                res.status(404).send('<p>some html</p>');
             }
             
         });
@@ -53,7 +55,7 @@ router.post('/', function (req, res, next) {
 
     
 
-   res.send('we are in POST')
+   //res.send('we are in POST')
 });
 
 module.exports = router;
