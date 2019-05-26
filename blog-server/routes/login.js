@@ -53,14 +53,24 @@ router.post('/', function (req, res, next) {
                   function(err, token) { //TODO: tip #1: if the desired result isn't obtained, check the err message to troubleshoot
                       console.log(err)
                       console.log('token is ' + token);
-                    });
 
-                  res.status(200).send('<p>some html</p>');
+                      res.cookie('jwt', token);
+                      if(redirect) //if redirect was passed in
+                      {
+                       // res.cookie('jwt', token);
+                        res.redirect(redirect);
+                      }
+                      else
+                      {
+                        res.status(200).send('<p>The authentication was successful.</p>');
+                      }
+          
+                    });
             }
             else
             {
                 console.log('false')
-                res.status(404).send('<p>some html</p>');
+                res.status(401).send('<p>some html</p>');
             }
             
         });
