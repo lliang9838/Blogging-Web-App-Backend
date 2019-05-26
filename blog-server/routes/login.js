@@ -37,8 +37,14 @@ router.post('/', function (req, res, next) {
       else{
         console.log(docs)
         bcrypt.compare(plain_password, docs[0].password, function(err, result) { //reaching here means we're validated
-            console.log(result)
-            res.send('hi')
+            if(result) //meaning true,
+            {
+                console.log('true')
+            }
+            else
+            {
+                console.log('false')
+            }
             
         });
       }
