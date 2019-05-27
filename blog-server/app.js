@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var blogRouter = require('./routes/blog');
 var loginRouter = require('./routes/login');
-
+var apiRouter = require('./routes/api');
 
 var mongoUtil = require( './mongoUtil' ); //current directory
 
@@ -32,6 +32,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/blog', blogRouter);
 app.use('/login', loginRouter);
+app.use('/api',apiRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

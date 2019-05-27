@@ -9,8 +9,6 @@ var mongoUtil = require( '../mongoUtil' );
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     let redirect = req.query.redirect //optional parameter
-
-
     
     res.render('login', {redirect:redirect})
     
