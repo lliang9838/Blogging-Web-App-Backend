@@ -20,5 +20,30 @@ router.get('/:username', function(req, res, next)
 
     //res.send('respond with a resource');
 });
+
+router.get('/:username/:postid', function(req, res, next) 
+{
+    let username = req.params.username 
+    let postid = req.params.postid
+
+    const col = mongoUtil.db().collection('Posts')
+
+    col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+
+        console.log(docs)
+
+        if(1 !== docs.length)
+        {
+            res.sendStatus(404);
+        }
+        else
+        {
+            //content type switches to application/json
+            res.status(200).send(docs[0])
+        }
+    });
+
+    //res.send('respond with a resource');
+});
   
 module.exports = router;
