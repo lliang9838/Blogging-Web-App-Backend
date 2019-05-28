@@ -13,3 +13,5 @@
     ```
     * Many thanks to StackOverflow for solving this.
     For more details, go to: https://stackoverflow.com/questions/5296402/unterminated-string-literal
+---
+* Knowing when to put parameters in request body (POST/PUT) vesus putting parameters in query string (GET/DELETE)

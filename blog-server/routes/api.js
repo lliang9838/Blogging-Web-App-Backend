@@ -47,7 +47,7 @@ router.get('/:username/:postid', function(req, res, next)
     //res.send('respond with a resource');
 });
   
-router.post('/:username/:postid', function(req, res, next) 
+router.post('/:username/:postid', function(req, res, next) //*title and body in its body in JSON
 {
     let username = req.params.username 
     let postid = req.params.postid
@@ -77,7 +77,7 @@ router.post('/:username/:postid', function(req, res, next)
     });
 });
 
-router.put('/:username/:postid', function(req, res, next)
+router.put('/:username/:postid', function(req, res, next) //*title and body in its body in JSON
 {
     let username = req.params.username
     let postid = req.params.postid
@@ -102,6 +102,26 @@ router.put('/:username/:postid', function(req, res, next)
 
     });
        
+});
+
+router.delete('/:username/:postid', function(req, res, next)
+{
+    let username = req.params.username
+    let postid = req.params.postid
+
+    const col = mongoUtil.db().collection('Posts')
+
+    col.deleteOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, function(err, r) {
+        
+        if(r.deletedCount !== 1) //there is not such post
+        {
+            res.sendStatus(400)
+        }
+        else
+        {
+            res.sendStatus(204)
+        }
+    });
 });
 
 module.exports = router;
