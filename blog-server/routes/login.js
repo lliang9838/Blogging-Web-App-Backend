@@ -35,13 +35,13 @@ router.post('/', function (req, res, next) {
         res.status(401).send("<head><title>Blog Web Page</title></head><body><form  method=\"post\">Username:<br><input type=\"text\" name=\"username\"><br\>Password:<br><input type=\"password\" name=\"password\"><input type=\"submit\" value=\"Login\"></form></body>")
       }
       else{
-        console.log(docs)
+       // console.log(docs)
         bcrypt.compare(plain_password, docs[0].password, function(err, result) { //reaching here means we're validated
             if(result) //meaning true,
             {
-                console.log('true')
-                console.log(Date.now())
-                console.log(Math.floor(Date.now() / 1000) + (120 * 60))
+               // console.log('true')
+               // console.log(Date.now())
+              //  console.log(Math.floor(Date.now() / 1000) + (120 * 60))
                
                 jwt.sign({
                   
@@ -55,8 +55,8 @@ router.post('/', function (req, res, next) {
                   "typ": "JWT"
                   } },
                   function(err, token) { //TODO: tip #1: if the desired result isn't obtained, check the err message to troubleshoot
-                      console.log(err)
-                      console.log('token is ' + token);
+                     // console.log(err)
+                     // console.log('token is ' + token);
 
                       res.cookie('jwt', token);
                       if(redirect) //if redirect was passed in

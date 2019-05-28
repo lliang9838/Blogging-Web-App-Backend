@@ -79,7 +79,7 @@ router.get('/:username/:postid', function(req, res, next) {
         res.sendStatus(404);
       }
       else{
-        console.log(docs)
+       // console.log(docs)
         var title = docs[0].title
         var body = docs[0].body
 

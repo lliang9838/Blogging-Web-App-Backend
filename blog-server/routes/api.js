@@ -13,18 +13,45 @@ router.get('/:username', function(req, res, next)
 
     if(!username)
     {
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
 
-    const col = mongoUtil.db().collection('Posts')
+    if(typeof req.cookies.jwt === 'undefined') //check #1: no cookie in the header
+    {
+        return res.sendStatus(401) //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
+    }
 
-    col.find({"username":username.toString()}).toArray(function(err, docs) {
-        //console.log(docs)
+    //console.log(req.cookies.jwt)
 
-        //content type switches to application/json
-        res.status(200).send(docs)
+    let token = req.cookies.jwt
+
+    jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
+        
+        let curr_time = decoded.exp*1000
+       // console.log(curr_time)
+       // console.log(Date.now())
+
+        if(Date.now() > curr_time) //check #2: jwt token expired
+        {
+            res.sendStatus(401)
+        }
+        else if(decoded.usr !== username) //check #3: if the username in jwt does not match username in URL
+        {
+            res.sendStatus(401)
+        }
+        else
+        {
+
+            const col = mongoUtil.db().collection('Posts')
+
+            col.find({"username":username.toString()}).toArray(function(err, docs) {
+                //console.log(docs)
+
+                //content type switches to application/json
+                res.status(200).send(docs)
+            });
+        } 
     });
-
     //res.send('respond with a resource');
 });
 
@@ -51,8 +78,8 @@ router.get('/:username/:postid', function(req, res, next)
     jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
         
         let curr_time = decoded.exp*1000
-        console.log(curr_time)
-        console.log(Date.now())
+        //console.log(curr_time)
+        //console.log(Date.now())
 
         if(Date.now() > curr_time) //check #2: jwt token expired
         {
@@ -95,23 +122,56 @@ router.post('/:username/:postid', function(req, res, next) //*title and body in 
     let title = req.body.title
     let body = req.body.body
 
-    let created = Date.now() //correct return values
-    let modified = Date.now()
+    if(!username || !postid || !title || !body)
+    {
+        return res.sendStatus(400)
+    }
 
-    const col = mongoUtil.db().collection('Posts')
+    if(typeof req.cookies.jwt === 'undefined') //check #1: no cookie in the header
+    {
+        return res.sendStatus(401) //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
+    }
 
-    col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+    //console.log(req.cookies.jwt)
+
+    let token = req.cookies.jwt
+
+    jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
         
-        if(docs.length == 1) //meaning this postid and username exists, throw 400 error
+        let curr_time = decoded.exp*1000
+       // console.log(curr_time)
+       // console.log(Date.now())
+
+        if(Date.now() > curr_time) //check #2: jwt token expired
         {
-            res.sendStatus(400)
+            res.sendStatus(401)
+        }
+        else if(decoded.usr !== username) //check #3: if the username in jwt does not match username in URL
+        {
+            res.sendStatus(401)
         }
         else
         {
-            col.insertOne({postid:Number(postid) ,username: username, created:created, modified:modified,title:title, body:body },function(err, r) {
-                assert.equal(null, err);
-                assert.equal(1, r.insertedCount);
-                res.sendStatus(201)
+
+            let created = Date.now() //correct return values
+            let modified = Date.now()
+
+            const col = mongoUtil.db().collection('Posts')
+
+            col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+                
+                if(docs.length == 1) //meaning this postid and username exists, throw 400 error
+                {
+                    res.sendStatus(400)
+                }
+                else
+                {
+                    col.insertOne({postid:Number(postid) ,username: username, created:created, modified:modified,title:title, body:body },function(err, r) {
+                        assert.equal(null, err);
+                        assert.equal(1, r.insertedCount);
+                        res.sendStatus(201)
+                    });
+                }
             });
         }
     });
@@ -125,21 +185,51 @@ router.put('/:username/:postid', function(req, res, next) //*title and body in i
     let title = req.body.title
     let body = req.body.body
 
-    let modified = Date.now()
+    if(!username || !postid || !title || !body)
+    {
+        return res.sendStatus(400)
+    }
 
-    const col = mongoUtil.db().collection('Posts')
+    if(typeof req.cookies.jwt === 'undefined') //check #1: no cookie in the header
+    {
+        return res.sendStatus(401) //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
+    }
 
-    col.updateOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, {$set: {body:body, title:title,modified:modified }}, function(err, r) {
+    let token = req.cookies.jwt
+
+    jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
         
-        if(r.matchedCount == 0) //meaning none were matched
+        let curr_time = decoded.exp*1000
+       // console.log(curr_time)
+       // console.log(Date.now())
+
+        if(Date.now() > curr_time) //check #2: jwt token expired
         {
-            res.sendStatus(400)
+            res.sendStatus(401)
+        }
+        else if(decoded.usr !== username) //check #3: if the username in jwt does not match username in URL
+        {
+            res.sendStatus(401)
         }
         else
         {
-            res.sendStatus(200)
-        } 
+            let modified = Date.now()
 
+            const col = mongoUtil.db().collection('Posts')
+
+            col.updateOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, {$set: {body:body, title:title,modified:modified }}, function(err, r) {
+                
+                if(r.matchedCount == 0) //meaning none were matched
+                {
+                    res.sendStatus(400)
+                }
+                else
+                {
+                    res.sendStatus(200)
+                } 
+
+            });
+        }
     });
        
 });
@@ -149,17 +239,49 @@ router.delete('/:username/:postid', function(req, res, next)
     let username = req.params.username
     let postid = req.params.postid
 
-    const col = mongoUtil.db().collection('Posts')
+    if(!username || !postid)
+    {
+        return res.sendStatus(400)
+    }
 
-    col.deleteOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, function(err, r) {
+    if(typeof req.cookies.jwt === 'undefined') //check #1: no cookie in the header
+    {
+        return res.sendStatus(401) //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
+    }
+
+    let token = req.cookies.jwt
+
+    jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
         
-        if(r.deletedCount !== 1) //there is not such post
+        let curr_time = decoded.exp*1000
+       // console.log(curr_time)
+       // console.log(Date.now())
+
+        if(Date.now() > curr_time) //check #2: jwt token expired
         {
-            res.sendStatus(400)
+            res.sendStatus(401)
+        }
+        else if(decoded.usr !== username) //check #3: if the username in jwt does not match username in URL
+        {
+            res.sendStatus(401)
         }
         else
         {
-            res.sendStatus(204)
+
+
+            const col = mongoUtil.db().collection('Posts')
+
+            col.deleteOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, function(err, r) {
+                
+                if(r.deletedCount !== 1) //there is not such post
+                {
+                    res.sendStatus(400)
+                }
+                else
+                {
+                    res.sendStatus(204)
+                }
+            });
         }
     });
 });
