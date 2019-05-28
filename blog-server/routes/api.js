@@ -11,6 +11,11 @@ router.get('/:username', function(req, res, next)
 {
     let username = req.params.username 
 
+    if(!username)
+    {
+        res.sendStatus(400)
+    }
+
     const col = mongoUtil.db().collection('Posts')
 
     col.find({"username":username.toString()}).toArray(function(err, docs) {
@@ -26,7 +31,20 @@ router.get('/:username', function(req, res, next)
 //TODO: tip: if you include modules in app.js, you can use it in your middleware
 router.get('/:username/:postid', function(req, res, next) 
 {
-    console.log(req.cookies.jwt)
+    let username = req.params.username 
+    let postid = req.params.postid
+
+    if(!username || !postid) //not including required data
+    {
+        return res.sendStatus(400)
+    }
+    
+    if(typeof req.cookies.jwt === 'undefined') //check #1: no cookie in the header
+    {
+        return res.sendStatus(401) //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
+    }
+
+    //console.log(req.cookies.jwt)
 
     let token = req.cookies.jwt
 
@@ -36,36 +54,35 @@ router.get('/:username/:postid', function(req, res, next)
         console.log(curr_time)
         console.log(Date.now())
 
-        let d = Date(Date.now())
-        let tok = new Date(curr_time);
-
-        console.log(d.toString());
-        console.log(tok.toString());
-
-        
-
-        console.log(decoded.usr)
-      });
-
-    let username = req.params.username 
-    let postid = req.params.postid
-
-    const col = mongoUtil.db().collection('Posts')
-
-    col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
-
-        //console.log(docs)
-
-        if(1 !== docs.length)
+        if(Date.now() > curr_time) //check #2: jwt token expired
         {
-            res.sendStatus(404);
+            res.sendStatus(401)
+        }
+        else if(decoded.usr !== username) //check #3: if the username in jwt does not match username in URL
+        {
+            res.sendStatus(401)
         }
         else
         {
-            //content type switches to application/json
-            res.status(200).send(docs[0])
+            const col = mongoUtil.db().collection('Posts')
+
+            col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+
+                //console.log(docs)
+
+                if(1 !== docs.length)
+                {
+                    res.sendStatus(404);
+                }
+                else
+                {
+                    //content type switches to application/json
+                    res.status(200).send(docs[0])
+                }
+            });
+
         }
-    });
+      });
 
     //res.send('respond with a resource');
 });
