@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const assert = require('assert');
 
 var mongoUtil = require( '../mongoUtil' );
 
@@ -46,4 +47,34 @@ router.get('/:username/:postid', function(req, res, next)
     //res.send('respond with a resource');
 });
   
+router.post('/:username/:postid', function(req, res, next) 
+{
+    let username = req.params.username 
+    let postid = req.params.postid
+
+    let title = req.body.title
+    let body = req.body.body
+
+    let created = Date.now() //correct return values
+    let modified = Date.now()
+
+    const col = mongoUtil.db().collection('Posts')
+
+    col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
+        
+        if(docs.length == 1) //meaning this postid and username exists, throw 400 error
+        {
+            res.sendStatus(400)
+        }
+        else
+        {
+            col.insertOne({postid:Number(postid) ,username: username, created:created, modified:modified,title:title, body:body },function(err, r) {
+                assert.equal(null, err);
+                assert.equal(1, r.insertedCount);
+                res.sendStatus(201)
+            });
+        }
+    });
+});
+
 module.exports = router;
