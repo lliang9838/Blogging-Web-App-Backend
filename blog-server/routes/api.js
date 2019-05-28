@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const assert = require('assert');
+var jwt = require('jsonwebtoken');
 
 var mongoUtil = require( '../mongoUtil' );
 
@@ -13,7 +14,7 @@ router.get('/:username', function(req, res, next)
     const col = mongoUtil.db().collection('Posts')
 
     col.find({"username":username.toString()}).toArray(function(err, docs) {
-        console.log(docs)
+        //console.log(docs)
 
         //content type switches to application/json
         res.status(200).send(docs)
@@ -22,8 +23,30 @@ router.get('/:username', function(req, res, next)
     //res.send('respond with a resource');
 });
 
+//TODO: tip: if you include modules in app.js, you can use it in your middleware
 router.get('/:username/:postid', function(req, res, next) 
 {
+    console.log(req.cookies.jwt)
+
+    let token = req.cookies.jwt
+
+    jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
+        
+        let curr_time = decoded.exp*1000
+        console.log(curr_time)
+        console.log(Date.now())
+
+        let d = Date(Date.now())
+        let tok = new Date(curr_time);
+
+        console.log(d.toString());
+        console.log(tok.toString());
+
+        
+
+        console.log(decoded.usr)
+      });
+
     let username = req.params.username 
     let postid = req.params.postid
 
@@ -31,7 +54,7 @@ router.get('/:username/:postid', function(req, res, next)
 
     col.find({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}).toArray(function(err, docs) {
 
-        console.log(docs)
+        //console.log(docs)
 
         if(1 !== docs.length)
         {

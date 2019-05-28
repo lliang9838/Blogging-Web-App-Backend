@@ -18,6 +18,7 @@ var app = express();
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(cookieParser())
 
 mongoUtil.connect(() => { //attached this callback so that the app only starts listening AFTER db instance is established
   //previously, we tried to listen and connect to db simultaneuously, but many times we didnt finish connecting db

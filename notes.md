@@ -15,3 +15,7 @@
     For more details, go to: https://stackoverflow.com/questions/5296402/unterminated-string-literal
 ---
 * Knowing when to put parameters in request body (POST/PUT) vesus putting parameters in query string (GET/DELETE)
+---
+* Date is a function that is current time
+* new Date is more of a constructor. It initializes the newly created object
+    * for more details: https://stackoverflow.com/questions/9584719/date-vs-new-date-in-javascript

@@ -40,8 +40,12 @@ router.post('/', function (req, res, next) {
             if(result) //meaning true,
             {
                 console.log('true')
+                console.log(Date.now())
+                console.log(Math.floor(Date.now() / 1000) + (120 * 60))
                
                 jwt.sign({
+                  
+
                   exp : Math.floor(Date.now() / 1000) + (120 * 60),
                   usr : username
                 } , 
