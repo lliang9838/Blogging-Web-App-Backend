@@ -77,4 +77,31 @@ router.post('/:username/:postid', function(req, res, next)
     });
 });
 
+router.put('/:username/:postid', function(req, res, next)
+{
+    let username = req.params.username
+    let postid = req.params.postid
+
+    let title = req.body.title
+    let body = req.body.body
+
+    let modified = Date.now()
+
+    const col = mongoUtil.db().collection('Posts')
+
+    col.updateOne({$and: [{"postid":Number(postid)}, {"username": username.toString()}]}, {$set: {body:body, title:title,modified:modified }}, function(err, r) {
+        
+        if(r.matchedCount == 0) //meaning none were matched
+        {
+            res.sendStatus(400)
+        }
+        else
+        {
+            res.sendStatus(200)
+        } 
+
+    });
+       
+});
+
 module.exports = router;
