@@ -77,6 +77,8 @@ router.get('/:username/:postid', function(req, res, next)
 
     jwt.verify(token,"C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c",function(err, decoded) {
         
+        //TODO: need to add error checking here where exp is not defined, we should throw an error 
+        //telling person to log in first
         let curr_time = decoded.exp*1000
         //console.log(curr_time)
         //console.log(Date.now())
