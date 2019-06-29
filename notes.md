@@ -31,3 +31,5 @@
 ---
 * res.send vs return res.send
     * for more details: https://stackoverflow.com/questions/43055600/app-get-is-there-any-difference-between-res-send-vs-return-res-send
+---
+* to add cookie in postman, go to **Cookies** tab on the right and change Cookie_8 = value to jwt = [some val]
