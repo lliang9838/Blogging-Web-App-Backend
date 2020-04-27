@@ -194,7 +194,7 @@ router.put("/:username/:postid", function (
   let title = req.body.title;
   let body = req.body.body;
 
-  if (!username || !postid || !title || !body) {
+  if (!username || !postid) {
     return res.sendStatus(400);
   }
 
