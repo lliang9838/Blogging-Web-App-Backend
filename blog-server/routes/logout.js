@@ -6,7 +6,7 @@ const assert = require("assert");
 // POST method route
 router.post("/", function (req, res, next) {
   res.clearCookie("jwt");
-  res.send({ msg: "Logged out", status: 200 });
+  res.send("logged out");
 });
 
 module.exports = router;

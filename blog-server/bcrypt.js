@@ -1,5 +1,7 @@
 var bcrypt = require("bcrypt");
 const config = require("universal-config");
+const dotenv = require("dotenv");
+dotenv.config();
 
 console.log(config.get("SECRET_KEY"));
 
