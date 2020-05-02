@@ -15,4 +15,5 @@ db.Posts.insert({ "postid": 5, "username": "cs144", "created": 1518669658420, "m
 
 db.Users.insert({ "username": "cs144", "password": "$2a$10$2DGJ96C77f/WwIwClPwSNuQRqjoSnDFj9GDKjg6X/PePgFdXoE4W6" })
 db.Users.insert({ "username": "user2", "password": "$2a$10$kTaFlLbfY1nnHnjb3ZUP3OhfsfzduLwl2k/gKLXvHew9uX.1blwne" })
+db.Users.insert({ "username": "recruiter", "password": "$2b$10$77Qxm1Ak992CWu1kS8pkrOQ8OWozhUoiy2PXpz4fXHOOmwyv1CTbu" })
 

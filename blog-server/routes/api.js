@@ -19,8 +19,6 @@ router.get("/:username", function (req, res, next) {
     return res.sendStatus(401); //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
   }
 
-  //console.log(req.cookies.jwt)
-
   let token = req.cookies.jwt;
 
   jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
@@ -28,8 +26,6 @@ router.get("/:username", function (req, res, next) {
     decoded
   ) {
     let curr_time = decoded.exp * 1000;
-    // console.log(curr_time)
-    // console.log(Date.now())
 
     if (Date.now() > curr_time) {
       //check #2: jwt token expired
@@ -41,8 +37,6 @@ router.get("/:username", function (req, res, next) {
       const col = mongoUtil.db().collection("Posts");
 
       col.find({ username: username.toString() }).toArray(function (err, docs) {
-        //console.log(docs)
-
         //content type switches to application/json
         res.status(200).send(docs);
       });
@@ -66,8 +60,6 @@ router.get("/:username/:postid", function (req, res, next) {
     return res.sendStatus(401); //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
   }
 
-  //console.log(req.cookies.jwt)
-
   let token = req.cookies.jwt;
 
   jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
@@ -77,8 +69,6 @@ router.get("/:username/:postid", function (req, res, next) {
     //TODO: need to add error checking here where exp is not defined, we should throw an error
     //telling person to log in first
     let curr_time = decoded.exp * 1000;
-    //console.log(curr_time)
-    //console.log(Date.now())
 
     if (Date.now() > curr_time) {
       //check #2: jwt token expired
@@ -94,8 +84,6 @@ router.get("/:username/:postid", function (req, res, next) {
           $and: [{ postid: Number(postid) }, { username: username.toString() }],
         })
         .toArray(function (err, docs) {
-          //console.log(docs)
-
           if (1 !== docs.length) {
             res.sendStatus(404);
           } else {
@@ -105,15 +93,9 @@ router.get("/:username/:postid", function (req, res, next) {
         });
     }
   });
-
-  //res.send('respond with a resource');
 });
 
-router.post("/:username/:postid", function (
-  req,
-  res,
-  next //*title and body in its body in JSON
-) {
+router.post("/:username/:postid", function (req, res) {
   let username = req.params.username;
   let postid = req.params.postid;
 
@@ -129,8 +111,6 @@ router.post("/:username/:postid", function (
     return res.sendStatus(401); //doing return res.send returns the function so code below won't run, avoids the set header after they are sent to client
   }
 
-  //console.log(req.cookies.jwt)
-
   let token = req.cookies.jwt;
 
   jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
@@ -138,8 +118,6 @@ router.post("/:username/:postid", function (
     decoded
   ) {
     let curr_time = decoded.exp * 1000;
-    // console.log(curr_time)
-    // console.log(Date.now())
 
     if (Date.now() > curr_time) {
       //check #2: jwt token expired
@@ -210,8 +188,6 @@ router.put("/:username/:postid", function (
     decoded
   ) {
     let curr_time = decoded.exp * 1000;
-    // console.log(curr_time)
-    // console.log(Date.now())
 
     if (Date.now() > curr_time) {
       //check #2: jwt token expired
@@ -262,8 +238,6 @@ router.delete("/:username/:postid", function (req, res, next) {
     decoded
   ) {
     let curr_time = decoded.exp * 1000;
-    // console.log(curr_time)
-    // console.log(Date.now())
 
     if (Date.now() > curr_time) {
       //check #2: jwt token expired
