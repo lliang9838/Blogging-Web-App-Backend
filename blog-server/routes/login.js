@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const config = require("universal-config");
 
 const assert = require("assert");
 var mongoUtil = require("../mongoUtil");
@@ -38,7 +39,7 @@ router.post("/", function (req, res, next) {
               exp: Math.floor(Date.now() / 1000) + 120 * 60,
               usr: username,
             },
-            "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", // TODO: store secret key in environment
+            config.get("SECRET_KEY"), // TODO: store secret key in environment
             {
               header: {
                 alg: "HS256",

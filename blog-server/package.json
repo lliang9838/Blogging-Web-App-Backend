@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "babel-helpers": "^6.24.1",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
     "commonmark": "^0.29.0",
@@ -17,6 +18,7 @@
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.4",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "universal-config": "^0.3.0"
   }
 }

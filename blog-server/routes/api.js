@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const assert = require("assert");
 var jwt = require("jsonwebtoken");
+const config = require("universal-config");
 
 var mongoUtil = require("../mongoUtil");
 
@@ -21,10 +22,7 @@ router.get("/:username", function (req, res, next) {
 
   let token = req.cookies.jwt;
 
-  jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
-    err,
-    decoded
-  ) {
+  jwt.verify(token, config.get("SECRET_KEY"), function (err, decoded) {
     let curr_time = decoded.exp * 1000;
 
     if (Date.now() > curr_time) {
@@ -62,10 +60,7 @@ router.get("/:username/:postid", function (req, res, next) {
 
   let token = req.cookies.jwt;
 
-  jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
-    err,
-    decoded
-  ) {
+  jwt.verify(token, config.get("SECRET_KEY"), function (err, decoded) {
     //TODO: need to add error checking here where exp is not defined, we should throw an error
     //telling person to log in first
     let curr_time = decoded.exp * 1000;
@@ -113,10 +108,7 @@ router.post("/:username/:postid", function (req, res) {
 
   let token = req.cookies.jwt;
 
-  jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
-    err,
-    decoded
-  ) {
+  jwt.verify(token, config.get("SECRET_KEY"), function (err, decoded) {
     let curr_time = decoded.exp * 1000;
 
     if (Date.now() > curr_time) {
@@ -183,10 +175,7 @@ router.put("/:username/:postid", function (
 
   let token = req.cookies.jwt;
 
-  jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
-    err,
-    decoded
-  ) {
+  jwt.verify(token, config.get("SECRET_KEY"), function (err, decoded) {
     let curr_time = decoded.exp * 1000;
 
     if (Date.now() > curr_time) {
@@ -233,10 +222,7 @@ router.delete("/:username/:postid", function (req, res, next) {
 
   let token = req.cookies.jwt;
 
-  jwt.verify(token, "C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c", function (
-    err,
-    decoded
-  ) {
+  jwt.verify(token, config.get("SECRET_KEY"), function (err, decoded) {
     let curr_time = decoded.exp * 1000;
 
     if (Date.now() > curr_time) {
