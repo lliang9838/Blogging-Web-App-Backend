@@ -22,5 +22,8 @@
     "mongodb": "^3.2.4",
     "morgan": "~1.9.0",
     "universal-config": "^0.3.0"
+  },
+  "devDependencies": {
+    "@angular/cli": "^9.1.4"
   }
 }

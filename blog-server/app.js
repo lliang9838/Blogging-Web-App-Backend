@@ -30,7 +30,7 @@ mongoUtil.connect(() => {
   //attached this callback so that the app only starts listening AFTER db instance is established
   //previously, we tried to listen and connect to db simultaneuously, but many times we didnt finish connecting db
   //and we would get to the routes with no db instance and program would crash
-  app.listen(3000 || 5555, function () {
+  app.listen(process.env.PORT || 8080, function () {
     console.log(`Listening`);
   });
 });
