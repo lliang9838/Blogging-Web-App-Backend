@@ -1,0 +1,10 @@
+a {
+    text-decoration: none;
+    color: inherit;
+
+}
+li{
+    cursor: pointer;
+    text-decoration: none;
+    list-style: none;
+}
