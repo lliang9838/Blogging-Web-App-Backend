@@ -3,10 +3,8 @@ const config = require("universal-config");
 const dotenv = require("dotenv");
 dotenv.config();
 
-console.log(config.get("SECRET_KEY"));
-
 bcrypt.genSalt(10, function (err, salt) {
-  bcrypt.hash("B4c0//", salt, function (err, hash) {
+  bcrypt.hash("liang", salt, function (err, hash) {
     console.log("hash: ", hash);
   });
 });
