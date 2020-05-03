@@ -47,6 +47,8 @@ router.post("/", function (req, res, next) {
               },
             },
             function (err, token) {
+              // res.set("Access-Control-Allow-Credentials", true);
+              // res.set("Access-Control-Allow-Origin", "http://localhost:4200/");
               res.cookie("jwt", token);
               if (redirect) {
                 res.redirect(redirect);

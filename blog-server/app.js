@@ -3,17 +3,24 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var blogRouter = require("./routes/blog");
 var loginRouter = require("./routes/login");
 var logoutRouter = require("./routes/logout");
 var apiRouter = require("./routes/api");
+var cors = require("cors");
 
 var mongoUtil = require("./mongoUtil"); //current directory
 
 var app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+    credentials: true,
+  })
+);
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
